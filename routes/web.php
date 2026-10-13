@@ -2,8 +2,11 @@
 
 use App\Http\Controllers\Admin\AcademicYearController;
 use App\Http\Controllers\Admin\EnrollmentController;
+use App\Http\Controllers\Admin\GuardianController;
 use App\Http\Controllers\Admin\SchoolClassController;
+use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\SubjectController;
+use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\Admin\TeachingAssignmentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
@@ -42,6 +45,17 @@ Route::middleware(['auth', 'active', 'role:admin'])->prefix('admin')->name('admi
     Route::resource('teaching-assignments', TeachingAssignmentController::class)->only(['index', 'store', 'destroy']);
 
     Route::resource('enrollments', EnrollmentController::class)->only(['index', 'store']);
+
+    // Phase 5: Student, Teacher, and Guardian Management
+    Route::patch('students/{student}/toggle-status', [StudentController::class, 'toggleStatus'])->name('students.toggle-status');
+    Route::resource('students', StudentController::class);
+
+    Route::patch('teachers/{teacher}/toggle-status', [TeacherController::class, 'toggleStatus'])->name('teachers.toggle-status');
+    Route::resource('teachers', TeacherController::class);
+
+    Route::post('guardians/{guardian}/link-student', [GuardianController::class, 'linkStudent'])->name('guardians.link-student');
+    Route::delete('guardians/{guardian}/students/{student}', [GuardianController::class, 'unlinkStudent'])->name('guardians.unlink-student');
+    Route::resource('guardians', GuardianController::class);
 });
 
 // Teacher Routes

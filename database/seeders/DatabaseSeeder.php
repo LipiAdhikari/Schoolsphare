@@ -78,6 +78,9 @@ class DatabaseSeeder extends Seeder
 
         // 6. Academic Foundation Seeder
         $this->call(AcademicSeeder::class);
+
+        // 7. User Profiles Seeder (Students, Teachers, Guardians)
+        $this->call(UserProfilesSeeder::class);
     }
 }
 

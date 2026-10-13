@@ -102,4 +102,28 @@ class User extends Authenticatable
 
         return $this->role === $roles;
     }
+
+    /**
+     * Student profile associated with this user.
+     */
+    public function studentProfile(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Student::class);
+    }
+
+    /**
+     * Teacher profile associated with this user.
+     */
+    public function teacherProfile(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Teacher::class);
+    }
+
+    /**
+     * Guardian profile associated with this user.
+     */
+    public function guardianProfile(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Guardian::class);
+    }
 }

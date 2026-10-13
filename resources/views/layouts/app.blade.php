@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ $title ?? 'SchoolSphere — Smart School Management System' }}</title>
+    <title>@yield('title', $title ?? 'SchoolSphere — Smart School Management System')</title>
 
     <!-- Google Fonts: Instrument Sans -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -43,7 +43,11 @@
                 <x-flash />
 
                 <!-- Content Slot -->
-                {{ $slot }}
+                @isset($slot)
+                    {{ $slot }}
+                @else
+                    @yield('content')
+                @endisset
             </div>
         </main>
 
