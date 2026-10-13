@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\AcademicYearController;
+use App\Http\Controllers\Admin\EnrollmentController;
+use App\Http\Controllers\Admin\SchoolClassController;
+use App\Http\Controllers\Admin\SubjectController;
+use App\Http\Controllers\Admin\TeachingAssignmentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -20,19 +25,36 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'active'])
     ->name('dashboard');
 
-// Role-protected route groups
+// Administrator Routes (Protected with auth, active status, role:admin)
 Route::middleware(['auth', 'active', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Phase 4: Academic Structure
+    Route::resource('academic-years', AcademicYearController::class)->only(['index', 'store']);
+    Route::patch('academic-years/{academicYear}/set-current', [AcademicYearController::class, 'setCurrent'])->name('academic-years.set-current');
+
+    Route::resource('classes', SchoolClassController::class)->only(['index', 'store']);
+    Route::post('classes/{schoolClass}/sections', [SchoolClassController::class, 'storeSection'])->name('classes.sections.store');
+
+    Route::resource('subjects', SubjectController::class)->only(['index', 'store']);
+    Route::post('subjects/assign-class', [SubjectController::class, 'assignToClass'])->name('subjects.assign-class');
+
+    Route::resource('teaching-assignments', TeachingAssignmentController::class)->only(['index', 'store', 'destroy']);
+
+    Route::resource('enrollments', EnrollmentController::class)->only(['index', 'store']);
 });
 
+// Teacher Routes
 Route::middleware(['auth', 'active', 'role:teacher'])->prefix('teacher')->name('teacher.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
+// Student Routes
 Route::middleware(['auth', 'active', 'role:student'])->prefix('student')->name('student.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
+// Parent Routes
 Route::middleware(['auth', 'active', 'role:parent'])->prefix('parent')->name('parent.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
@@ -44,5 +66,5 @@ Route::middleware(['auth', 'active'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Authentication routes (Login, Logout, Password Reset, Registration)
+// Authentication routes
 require __DIR__.'/auth.php';
