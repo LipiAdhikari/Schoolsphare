@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AcademicYearController;
+use App\Http\Controllers\Admin\AttendanceController;
 use App\Http\Controllers\Admin\EnrollmentController;
 use App\Http\Controllers\Admin\GuardianController;
 use App\Http\Controllers\Admin\SchoolClassController;
@@ -56,11 +57,16 @@ Route::middleware(['auth', 'active', 'role:admin'])->prefix('admin')->name('admi
     Route::post('guardians/{guardian}/link-student', [GuardianController::class, 'linkStudent'])->name('guardians.link-student');
     Route::delete('guardians/{guardian}/students/{student}', [GuardianController::class, 'unlinkStudent'])->name('guardians.unlink-student');
     Route::resource('guardians', GuardianController::class);
+
+    // Phase 6: Attendance Management
+    Route::get('students/{student}/attendance', [AttendanceController::class, 'student'])->name('students.attendance');
+    Route::resource('attendance', AttendanceController::class)->only(['index', 'create', 'store', 'show']);
 });
 
 // Teacher Routes
 Route::middleware(['auth', 'active', 'role:teacher'])->prefix('teacher')->name('teacher.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('attendance', \App\Http\Controllers\Teacher\AttendanceController::class)->only(['index', 'create', 'store']);
 });
 
 // Student Routes

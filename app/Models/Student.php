@@ -76,6 +76,14 @@ class Student extends Model
     }
 
     /**
+     * Attendance records for this student.
+     */
+    public function attendances(): HasMany
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
+    /**
      * Combined student full name.
      */
     protected function fullName(): Attribute

@@ -122,8 +122,8 @@
                 Operations
             </div>
             <div class="space-y-1">
-                <a href="{{ url('/dashboard#attendance') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition-colors">
-                    <svg class="w-4 h-4 shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <a href="{{ route('admin.attendance.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg font-medium transition-colors {{ request()->routeIs('admin.attendance.*') ? 'bg-indigo-600 text-white shadow-xs' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                    <svg class="w-4 h-4 shrink-0 {{ request()->routeIs('admin.attendance.*') ? 'text-white' : 'text-slate-400' }}" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     <span>Attendance</span>
