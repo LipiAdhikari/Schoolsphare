@@ -31,11 +31,20 @@
         <div class="flex items-center gap-3">
             <span class="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
                 <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                MySQL Ready
+                MySQL Connected
             </span>
-            <x-button variant="primary" size="sm" href="{{ url('/dashboard') }}">
-                Launch Dashboard &rarr;
-            </x-button>
+            @auth
+                <x-button variant="primary" size="sm" href="{{ route('dashboard') }}">
+                    Open Dashboard &rarr;
+                </x-button>
+            @else
+                <x-button variant="secondary" size="sm" href="{{ route('login') }}">
+                    Log In
+                </x-button>
+                <x-button variant="primary" size="sm" href="{{ route('register') }}">
+                    Register
+                </x-button>
+            @endauth
         </div>
     </header>
 
@@ -45,23 +54,62 @@
             <!-- Hero Statement -->
             <div class="text-center space-y-4 pt-4">
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-50 border border-indigo-100 text-indigo-700">
-                    <span>Phase 2 Completed</span>
+                    <span>Phase 3 Completed</span>
                     <span class="text-indigo-300">&bull;</span>
-                    <span>Responsive Blade & Tailwind v4 UI</span>
+                    <span>Role-Based Authentication & Access Control</span>
                 </div>
                 <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
                     Centralized School Administration & Academics
                 </h1>
                 <p class="text-sm sm:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed">
-                    SchoolSphere replaces disconnected spreadsheets with a unified, relational database and role-based workflows for administrators, teachers, students, and parents.
+                    SchoolSphere replaces disconnected spreadsheets with a unified relational database and secure role-based workflows for administrators, teachers, students, and parents.
                 </p>
                 <div class="pt-2 flex flex-wrap items-center justify-center gap-3">
-                    <x-button variant="primary" size="lg" href="{{ url('/dashboard') }}">
-                        Open Executive Dashboard
-                    </x-button>
-                    <x-button variant="secondary" size="lg" href="https://github.com" target="_blank">
-                        View Project Architecture
-                    </x-button>
+                    @auth
+                        <x-button variant="primary" size="lg" href="{{ route('dashboard') }}">
+                            Go to Executive Dashboard &rarr;
+                        </x-button>
+                    @else
+                        <x-button variant="primary" size="lg" href="{{ route('login') }}">
+                            Sign In to Portal
+                        </x-button>
+                        <x-button variant="secondary" size="lg" href="{{ route('register') }}">
+                            Register Student Account
+                        </x-button>
+                    @endauth
+                </div>
+            </div>
+
+            <!-- Demo Demonstration Credentials Box -->
+            <div class="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-xs space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-900">Local Development Demo Accounts</h3>
+                        <p class="text-xs text-slate-500">Seeded safe local credentials for testing role-based access.</p>
+                    </div>
+                    <x-badge variant="indigo" size="sm">Password: password</x-badge>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                    <div class="p-3 rounded-lg bg-slate-50 border border-slate-100 space-y-1">
+                        <x-badge variant="indigo" size="sm">Administrator</x-badge>
+                        <p class="font-mono text-slate-800 font-medium">admin@schoolsphere.test</p>
+                        <p class="text-[11px] text-slate-500">Full school management access</p>
+                    </div>
+                    <div class="p-3 rounded-lg bg-slate-50 border border-slate-100 space-y-1">
+                        <x-badge variant="sky" size="sm">Teacher</x-badge>
+                        <p class="font-mono text-slate-800 font-medium">teacher@schoolsphere.test</p>
+                        <p class="text-[11px] text-slate-500">Classes, attendance & marks</p>
+                    </div>
+                    <div class="p-3 rounded-lg bg-slate-50 border border-slate-100 space-y-1">
+                        <x-badge variant="emerald" size="sm">Student</x-badge>
+                        <p class="font-mono text-slate-800 font-medium">student@schoolsphere.test</p>
+                        <p class="text-[11px] text-slate-500">Timetable, results & fees</p>
+                    </div>
+                    <div class="p-3 rounded-lg bg-slate-50 border border-slate-100 space-y-1">
+                        <x-badge variant="purple" size="sm">Parent / Guardian</x-badge>
+                        <p class="font-mono text-slate-800 font-medium">parent@schoolsphere.test</p>
+                        <p class="text-[11px] text-slate-500">Linked child monitoring</p>
+                    </div>
                 </div>
             </div>
 
@@ -108,9 +156,9 @@
             <div class="p-6 rounded-2xl bg-slate-900 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
                     <h4 class="text-sm font-bold tracking-tight">Built with Professional Full-Stack Standards</h4>
-                    <p class="text-xs text-slate-400 mt-1">Laravel 12 &bull; PHP 8.2 &bull; MySQL (XAMPP) &bull; Tailwind CSS v4 &bull; Blade &bull; Vite 7</p>
+                    <p class="text-xs text-slate-400 mt-1">Laravel 12 &bull; PHP 8.2 &bull; MySQL (schoolsphere) &bull; Tailwind CSS v4 &bull; Blade &bull; Vite 7</p>
                 </div>
-                <x-button variant="outline" size="sm" href="{{ url('/dashboard') }}" class="text-white border-slate-700 hover:bg-slate-800">
+                <x-button variant="outline" size="sm" href="{{ route('dashboard') }}" class="text-white border-slate-700 hover:bg-slate-800">
                     Preview Dashboard
                 </x-button>
             </div>

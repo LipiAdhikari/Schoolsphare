@@ -28,7 +28,7 @@
         <div class="flex items-center justify-between text-xs">
             <span class="text-slate-400 font-medium">Active Mode</span>
             <span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-indigo-950 text-indigo-300 border border-indigo-800/60">
-                Administrator
+                {{ ucfirst(Auth::user()->role ?? 'Administrator') }}
             </span>
         </div>
     </div>

@@ -2,10 +2,14 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class DashboardTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * Test that the landing page renders successfully with SchoolSphere branding.
      */
@@ -15,15 +19,27 @@ class DashboardTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('SchoolSphere');
-        $response->assertSee('Launch Dashboard');
+        $response->assertSee('Sign In to Portal');
     }
 
     /**
-     * Test that the dashboard renders the master layout and executive components.
+     * Test that guests cannot access the dashboard directly without logging in.
      */
-    public function test_dashboard_renders_successfully_with_components(): void
+    public function test_guests_are_redirected_to_login(): void
     {
         $response = $this->get('/dashboard');
+
+        $response->assertRedirect('/login');
+    }
+
+    /**
+     * Test that an authenticated user can view the dashboard and executive components.
+     */
+    public function test_authenticated_user_can_view_dashboard(): void
+    {
+        $user = User::factory()->admin()->create();
+
+        $response = $this->actingAs($user)->get('/dashboard');
 
         $response->assertStatus(200);
         $response->assertSee('Executive Dashboard');

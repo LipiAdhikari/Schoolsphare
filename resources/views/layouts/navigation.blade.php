@@ -10,7 +10,19 @@
         <div class="flex items-center gap-2">
             <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider hidden sm:inline">SchoolSphere</span>
             <span class="text-slate-300 hidden sm:inline">/</span>
-            <span class="text-xs font-semibold text-slate-700">Administration Portal</span>
+            <span class="text-xs font-semibold text-slate-700">
+                @if (Auth::user()?->isAdmin())
+                    Administration Portal
+                @elseif (Auth::user()?->isTeacher())
+                    Teacher Portal
+                @elseif (Auth::user()?->isStudent())
+                    Student Portal
+                @elseif (Auth::user()?->isParent())
+                    Parent Portal
+                @else
+                    School Portal
+                @endif
+            </span>
         </div>
     </div>
 
@@ -35,18 +47,36 @@
 
         <div class="h-6 w-px bg-slate-200"></div>
 
-        <!-- User Profile Dropdown Trigger -->
-        <div class="relative flex items-center gap-3">
-            <div class="h-8 w-8 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-xs ring-2 ring-indigo-500/20">
-                AD
+        <!-- User Profile Dropdown & Actions -->
+        @auth
+            <div class="flex items-center gap-3">
+                <a href="{{ route('profile.edit') }}" class="flex items-center gap-2.5 group">
+                    <div class="h-8 w-8 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-xs ring-2 ring-indigo-500/20 group-hover:bg-indigo-600 transition-colors">
+                        {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
+                    </div>
+                    <div class="hidden sm:block text-left">
+                        <span class="block text-xs font-semibold text-slate-900 leading-tight group-hover:text-indigo-600 transition-colors">
+                            {{ Auth::user()->name }}
+                        </span>
+                        <span class="block text-[11px] text-slate-500 leading-tight">
+                            {{ ucfirst(Auth::user()->role) }}
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Secure Logout Form -->
+                <form method="POST" action="{{ route('logout') }}" class="inline">
+                    @csrf
+                    <button type="submit" class="text-xs font-medium text-slate-500 hover:text-rose-600 transition-colors cursor-pointer ml-1" title="Log Out">
+                        Logout
+                    </button>
+                </form>
             </div>
-            <div class="hidden sm:block text-left">
-                <span class="block text-xs font-semibold text-slate-900 leading-tight">Administrator</span>
-                <span class="block text-[11px] text-slate-500 leading-tight">Super Admin</span>
+        @else
+            <div class="flex items-center gap-2">
+                <a href="{{ route('login') }}" class="text-xs font-medium text-slate-600 hover:text-indigo-600">Log in</a>
+                <a href="{{ route('register') }}" class="text-xs font-medium text-indigo-600 hover:text-indigo-700">Register</a>
             </div>
-            <a href="{{ url('/') }}" class="text-xs font-medium text-slate-500 hover:text-rose-600 hover:underline transition-colors ml-1" title="Exit to Landing">
-                Logout
-            </a>
-        </div>
+        @endauth
     </div>
 </header>
